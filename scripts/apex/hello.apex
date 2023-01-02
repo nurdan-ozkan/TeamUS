@@ -297,3 +297,17 @@ for(integer i=0; i<5; i++){
 insert conList;
 insert oppList;
 
+/* 11. Insert 5 Accounts by populating Name, Phone, Type, Annual Revenue and Industry Field
+Values. [Hint: Use Loop]
+
+12. Insert 5 Opportunities with different Opportunity Names, CloseDate = Today’s Date and
+Stage = ‘Prospecting’. [Hint: Use Loop]
+
+13. Insert an Account along with 1 related Contact.
+
+14. Insert an Account along with 1 related Contact and 1 related Opportunity.
+
+15. Insert 5 Accounts with at least 1 related Opportunity. [Hint: Use Loop and List]
+
+16. Insert 5 Accounts and a Contact & a Opportunity related to each account.
+[Hint: Use Loop and List]*/
