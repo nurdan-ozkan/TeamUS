@@ -310,4 +310,23 @@ Stage = ‘Prospecting’. [Hint: Use Loop]
 15. Insert 5 Accounts with at least 1 related Opportunity. [Hint: Use Loop and List]
 
 16. Insert 5 Accounts and a Contact & a Opportunity related to each account.
-[Hint: Use Loop and List]*/
+[Hint: Use Loop and List]
+
+17. Query Accounts where Phone =’123456’ and update Phone to ’654321’.
+
+18. Query Contacts where Email is null and update their email with
+‘welcome@studysalesforce.com.
+
+19. Query Accounts where Phone =654321 and update Phone to 123456. Also create 5 new
+account records. [Hint : Use Upsert Statement]
+
+20. Query Opportunities where created date is last month and updated their stage to closed
+won. Also create 5 new opportunities. [Hint: Use Upsert Statement]
+
+21. Delete account records where Phone =’123456’. Verify whether records are deleted
+through Recycle Bin.
+
+22. Undelete account records deleted in previous step. Check recycle bin is not having those
+records and they will be under the accounts tab in the app.
+*/
+
