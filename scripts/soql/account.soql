@@ -1,6 +1,35 @@
-// Use .soql files to store SOQL queries.
-// You can execute queries in VS Code by selecting the
-//     query text and running the command:
-//     SFDX: Execute SOQL Query with Currently Selected Text
+/* 25. Query Accounts created last week. Now Insert one opportunity under each account.
 
-SELECT Id, Name FROM Account
+26. Query Account created in the last 7 days. Now update their phone number with
+‘1234567890’.
+
+27. Query Opportunities created in the last 7 days. If the opportunity stage is closed won
+then update description as ‘Opportunity is Closed Won’, in case of closed lost update
+description as ‘Opportunity is Closed Lost’, otherwise ‘Opportunity is Open’.
+
+28. Query Accounts created in the last one month. Populated ’Total Contacts’ Field on
+Account by counting number of contacts associated with Account. If no contact then
+populate 0.
+
+29. Query Contacts created last week and if Mobile phone is not populated on contact then
+copy Phone of Related Account. [Hint: Use Child-Parent SOQL]
+
+30. Create a Custom Object named “Employee”. Create Name, Salary, Phone, Lookup (to
+Account) fields on Employee Object. Create a Total Salary field on Account. Now Query
+Accounts created this year along with related Employees. Populate total salary of all
+related employees on account. [Hint: Use Parent-Child SOQL]
+
+31. Query Employee records created this year and if the Phone field is not populated on the
+Employee record then copy the Phone of Related Account record.
+[Hint: Use Child-Parent SOQL]
+
+32. Create a lookup to Employee on Contact object. Query Contacts created last week and if
+Mobile phone is not populated on contact then copy Phone of Related Employee.
+[Hint: Employee is Parent and Contact is Child, Use Child-Parent SOQL] */
+
+
+30.
+SELECT Id,Name, Total_Salary__c, CreatedDate,
+(SELECT Name__c FROM Employies__r)
+FROM Account 
+WHERE CreatedDate=LAST_N_YEARS:1
