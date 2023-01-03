@@ -28,6 +28,13 @@ Mobile phone is not populated on contact then copy Phone of Related Employee.
 [Hint: Employee is Parent and Contact is Child, Use Child-Parent SOQL] */
 
 
+29.
+
+SELECT Id, Name, Phone , Account.Name, Account.Phone 
+FROM Contact
+WHERE Phone = NULL
+
+
 30.
 SELECT Id,Name, Total_Salary__c, CreatedDate,
 (SELECT Name__c FROM Employees__r)
