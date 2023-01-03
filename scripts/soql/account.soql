@@ -30,6 +30,6 @@ Mobile phone is not populated on contact then copy Phone of Related Employee.
 
 30.
 SELECT Id,Name, Total_Salary__c, CreatedDate,
-(SELECT Name__c FROM Employies__r)
+(SELECT Name__c FROM Employees__r)
 FROM Account 
 WHERE CreatedDate=LAST_N_YEARS:1
