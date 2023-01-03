@@ -30,9 +30,9 @@ Mobile phone is not populated on contact then copy Phone of Related Employee.
 
 29.
 
-SELECT Id, Name, Phone , Account.Name, Account.Phone 
+SELECT Id, Name, Phone ,CreatedDate , Account.Name, Account.Phone 
 FROM Contact
-WHERE Phone = NULL
+WHERE Phone = NULL AND CreatedDate = LAST_N_WEEKS:1
 
 
 30.
