@@ -29,15 +29,115 @@ Mobile phone is not populated on contact then copy Phone of Related Employee.
 
 -----------------------Answer----------------
 
-29.
+25. Query Accounts created last week. Now Insert one opportunity under each account.
+List<Account> accList =new List <Account> 
+([select id, CreatedDate from account where CreatedDate = Last_N_Weeks:13 ]);
+List<Opportunity> oppList=new List<Opportunity>();
+for(Account acc:accList){
+    Opportunity opp=new Opportunity();
+	opp.AccountId=acc.Id;
+	opp.Name='Q25 Last Week';
+	opp.CloseDate=Date.TODAY();
+	opp.StageName='Prospecting';
+    oppList.add(opp);
+}
+insert oppList;
 
-SELECT Id, Name, Phone ,CreatedDate , Account.Name, Account.Phone 
-FROM Contact
-WHERE Phone = NULL AND CreatedDate = LAST_N_WEEKS:1
+-------------------------------------------
 
+26. Query Account created in the last 7 days. Now update their phone number with '1234567890'.
+List<Account> accList =new List <Account>
+ ([select id, Name, CreatedDate from account where CreatedDate = LAST_N_DAYS:7]);
+for(Account acc:accList){
+    acc.Phone='1234567890';
+}
+update accList;
 
-30.
-SELECT Id,Name, Total_Salary__c, CreatedDate,
-(SELECT Name__c FROM Employees__r)
-FROM Account 
-WHERE CreatedDate=LAST_N_YEARS:1
+-------------------------------------------- 
+
+27. Query Opportunities created in the last 7 days. If the opportunity stage is closed won
+then update description as 'Opportunity is Closed Won', in case of closed lost update
+description as 'Opportunity is Closed Lost', otherwise 'Opportunity is Open'.
+List<Opportunity> oppList =new List <Opportunity> 
+    ([select id, CreatedDate, StageName from Opportunity where CreatedDate = LAST_N_DAYS:7]);
+for(Opportunity opp:oppList){
+    if( opp.StageName =='Closed Won'){
+        opp.Description='Opportunity is Closed Won';
+    }else if(opp.StageName =='Closed Lost'){
+        opp.Description='Opportunity is Closed Lost';
+    }else{
+        opp.Description='Opportunity is Open';
+    }
+}
+update oppList;
+    
+  --------------------------------------------  
+
+28. Query Accounts created in the last one month. Populated 'Total Contacts' Field on
+Account by counting number of contacts associated with Account. If no contact then
+populate 0. a.Contacts.size()
+List<Account> accList =new List <Account>
+([select id, total__c, CreatedDate, (select id, lastName from contacts) from account where CreatedDate = Last_N_Months:1 ]);
+for(Account acc:accList){
+    if(acc.Contacts.size()>0){
+       acc.total__c=acc.Contacts.size();
+    }else{
+         acc.total__c=0;
+    }  
+}
+update accList;
+
+-----------------------------------------------
+
+29. Query Contacts created last week and if Mobile phone is not populated on contact then
+copy Phone of Related Account. [Hint: Use Child-Parent SOQL]
+List<Contact> conList=new List<Contact>
+([select id, lastName, Phone, Account.Phone, Account.Id , CreatedDate from Contact where CreatedDate= Last_N_Weeks:3]);
+for(Contact con:conList){
+    if(con.Phone == null){
+        con.Phone =con.Account.Phone;
+    }
+}
+update conList;
+--------------------------------------
+
+30. Create a Custom Object named "Employee". Create Name, Salary, Phone, Lookup (to
+Account) fields on Employee Object. Create a Total Salary field on Account. Now Query
+Accounts created this year along with related Employees. Populate total salary of all
+related employees on account. [Hint: Use Parent-Child SOQL]
+List<Account> accList= new List<Account>
+    ([select id, Total_Salary__c, CreatedDate, 
+      (select id, Salary__c, Account__c from Employees__r)  from Account where CreatedDate = THIS_YEAR]);
+for(Account acc:accList){
+	acc.Total_Salary__c +=acc.Employee__c.Salary__c;
+}
+update accList;
+---------------------------------
+
+31. Query Employee records created this year and if the Phone field is not populated on the
+Employee record then copy the Phone of Related Account record.
+[Hint: Use Child-Parent SOQL]
+
+List<Employee__c> empList= new List<Employee__c>
+    ([select id, Phone__c, CreatedDate, Account__r.Phone from Employee__c where CreatedDate = THIS_YEAR]);
+for(Employee__c emp:empList){
+    if(emp.Phone__c == null){
+        emp.Phone__c =emp.Account.Phone;
+    }
+}
+if(empList.isEmpty()){
+     update empList; 
+}
+   ------------------------------------
+   
+32. Create a lookup to Employee on Contact object. Query Contacts created last week and if
+Mobile phone is not populated on contact then copy Phone of Related Employee.
+[Hint: Employee is Parent and Contact is Child, Use Child-Parent SOQL]
+List<Contact> conList= new List<Contact>
+    ([select id, email, MobilePhone, CreatedDate, Employee__r.Phone__c from Contact where email='welcome@studysalesforce.com']);
+for(contact con:conList){
+    if(con.MobilePhone == null){
+        con.MobilePhone =con.Employee__r.Phone__c;
+    }
+}
+update conList;
