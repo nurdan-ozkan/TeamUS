@@ -332,32 +332,6 @@ through Recycle Bin.
 records and they will be under the accounts tab in the app.
 */
 
-16. Insert 5 Accounts and a Contact & a Opportunity related to each account.
-[Hint: Use Loop and List]
-
-List<Account> accList=new List<account>();
-for(integer i=0; i<5; i++){
-    Account acc=new Account ();
-	acc.Name='5 Account Each Related Con&Opp '+i ;
-    accList.add(acc); 
-}
-insert accList;
-List<Opportunity> oppList=new List<Opportunity>();
-List<Contact> conList=new List<Contact>();
-for(integer i=0; i<5; i++){
-    Opportunity opp=new Opportunity();
-	opp.AccountId=accList[i].Id;
-	opp.Name='5 Account Each Related Con&Opp';
-	opp.CloseDate=Date.TODAY();
-	opp.StageName='Prospecting';
-    oppList.add(opp);
-    Contact con=new contact();
-	con.AccountId=accList[i].Id;
-	con.lastName='5 Account Each Related Con&Opp';
-	conList.add(con);
-}
-insert conList;
-insert oppList;
 
 17. Query Accounts where Phone ='123456' and update Phone to '654321'.
 List<Account> accList =new List <Account> ([select id, phone from account where phone='123456']);
