@@ -27,6 +27,7 @@ Employee record then copy the Phone of Related Account record.
 Mobile phone is not populated on contact then copy Phone of Related Employee.
 [Hint: Employee is Parent and Contact is Child, Use Child-Parent SOQL] */
 
+-----------------------Answer----------------
 
 29.
 
