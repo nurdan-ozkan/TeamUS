@@ -141,3 +141,18 @@ for(contact con:conList){
     }
 }
 update conList;
+
+
+List<Account> accList = [SELECT Id,Name, Total_Salary__c, CreatedDate,
+                        (SELECT Name__c FROM Employees__r)
+                        FROM Account
+                        WHERE CreatedDate = THIS_YEAR];
+    
+for (Account a : accList) {
+  Decimal totalSalary = 0;
+  for (Employee__c e : a.Employee__c) {
+    totalSalary += e.Salary;
+  }
+  a.TotalSalary = totalSalary;
+}
+update accList;
