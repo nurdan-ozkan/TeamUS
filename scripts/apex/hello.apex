@@ -312,6 +312,8 @@ Stage = ‘Prospecting’. [Hint: Use Loop]
 16. Insert 5 Accounts and a Contact & a Opportunity related to each account.
 [Hint: Use Loop and List]
 
+---------------------------
+
 17. Query Accounts where Phone =’123456’ and update Phone to ’654321’.
 
 18. Query Contacts where Email is null and update their email with
@@ -329,4 +331,98 @@ through Recycle Bin.
 22. Undelete account records deleted in previous step. Check recycle bin is not having those
 records and they will be under the accounts tab in the app.
 */
+
+16. Insert 5 Accounts and a Contact & a Opportunity related to each account.
+[Hint: Use Loop and List]
+
+List<Account> accList=new List<account>();
+for(integer i=0; i<5; i++){
+    Account acc=new Account ();
+	acc.Name='5 Account Each Related Con&Opp '+i ;
+    accList.add(acc); 
+}
+insert accList;
+List<Opportunity> oppList=new List<Opportunity>();
+List<Contact> conList=new List<Contact>();
+for(integer i=0; i<5; i++){
+    Opportunity opp=new Opportunity();
+	opp.AccountId=accList[i].Id;
+	opp.Name='5 Account Each Related Con&Opp';
+	opp.CloseDate=Date.TODAY();
+	opp.StageName='Prospecting';
+    oppList.add(opp);
+    Contact con=new contact();
+	con.AccountId=accList[i].Id;
+	con.lastName='5 Account Each Related Con&Opp';
+	conList.add(con);
+}
+insert conList;
+insert oppList;
+
+17. Query Accounts where Phone ='123456' and update Phone to '654321'.
+List<Account> accList =new List <Account> ([select id, phone from account where phone='123456']);
+for(Account acc:accList){
+    acc.Phone='654321';
+}
+update accList;
+
+18. Query Contacts where Email is null and update their email with
+'welcome@studysalesforce.com.
+List<contact> conList =new List <Contact> ([select id, email from contact where email=null]);
+for(Contact con:conList){
+   con.Email='welcome@studysalesforce.com';
+}
+update conList;
+
+    
+19. Query Accounts where Phone =654321 and update Phone to 123456. Also create 5 new
+account records. [Hint : Use Upsert Statement]
+List<Account> accList =new List <Account> ([select id, phone from account where phone='654321']); 
+for(Account acc:accList){
+    acc.Phone='123456';
+}
+for(integer i=1; i<6; i++){
+    Account acc=new Account(name='Q19 '+i);
+    accList.add(acc);
+}
+upsert accList;
+
+/*20. Query Opportunities where created date is last month and updated their stage to closed
+won. Also create 5 new opportunities. [Hint: Use Upsert Statement]*/
+List<Opportunity> oppList =new List<Opportunity>
+([select id, Name, CreatedDate, StageName, CloseDate from Opportunity where CreatedDate = Last_N_Months:2 or CreatedDate = THIS_MONTH]); 
+for(Opportunity opp:oppList){
+    opp.StageName='Closed Won';
+}
+for(integer i=1; i<6; i++){
+    Opportunity op=new Opportunity(Name='Q19 '+i, StageName='Closed', CloseDate=Date.Today());
+    oppList.add(op);
+}
+upsert oppList;
+
+//CreatedDate >= Last_N_Months:3 AND CreatedDate <= today
+//CreatedDate >=: last_n_month AND CreatedDate <=: today order by CreatedDate DESC
+
+21. Delete account records where Phone ='123456'. Verify whether records are deleted
+through Recycle Bin.
+List<Account> accList =new List <Account> ([select id, phone from account where phone='123456']);
+delete accList;
+22. Undelete account records deleted in previous step. Check recycle bin is not having those
+records and they will be under the accounts tab in the app.
+Account[] accList =[select id, phone from Account where phone='123456' ALL ROWS];
+undelete accList;
+
+23. Insert 200 Account records and your code should not hit the governor limit. Once records
+are successfully created then just delete those 200 records only.
+List<Account> accList=new List<account>();
+for(integer i=0; i<2; i++){
+    Account acc=new Account ();
+	acc.Name='Q23 dont hit governor '+i ;
+    accList.add(acc); 
+}
+insert accList;
+List<Account> accList =new List <Account> ([select id, name from account where name like:'Q23%' limit 200]);
+delete accList;
+List<Account> accList =new List <Account> ([select id, name from account order by CreatedDate desc limit 2]);
+delete accList;
 
