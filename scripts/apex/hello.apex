@@ -332,6 +332,9 @@ through Recycle Bin.
 records and they will be under the accounts tab in the app.
 */
 
+/*23.23. Insert 200 Account records and your code should not hit the governor limit. Once records
+are successfully created then just delete those 200 records only.*/
+
 
 17. Query Accounts where Phone ='123456' and update Phone to '654321'.
 List<Account> accList =new List <Account> ([select id, phone from account where phone='123456']);
